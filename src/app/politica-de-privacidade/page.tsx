@@ -33,9 +33,11 @@ export default function PoliticaPage() {
           Cookies e rastreamento
         </h2>
         <p>
-          Utilizamos Google Analytics 4 e Meta Pixel para entender como o site é
-          usado e otimizar nossas campanhas. Essas ferramentas podem utilizar
-          cookies de acordo com suas próprias políticas.
+          Utilizamos Google Analytics 4, Meta Pixel e Travelpayouts Drive para
+          entender como o site é usado, otimizar campanhas e converter
+          automaticamente menções a destinos e serviços de viagem em links de
+          afiliado. Essas ferramentas podem utilizar cookies de acordo com suas
+          próprias políticas.
         </p>
         <h2 className="mt-6 text-xl font-semibold text-foreground">
           Seus direitos
