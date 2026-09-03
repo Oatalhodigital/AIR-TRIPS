@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AIR-TRIP
 
-## Getting Started
+Site de divulgação de passagens aéreas, hotéis e passeios via links de afiliado. O AIR-TRIP é uma vitrine comparativa: não vende diretamente, apenas direciona para os sites dos parceiros.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Next.js 16 + React 19 + TypeScript
+- Tailwind CSS v4
+- Supabase (Postgres) — `supabase/schema.sql`
+- Google Analytics 4 + Meta Pixel
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Como rodar
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Instale as dependências:
+   ```bash
+   npm install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Copie `env.example.txt` para `.env.local` e preencha:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=
+   SUPABASE_SERVICE_ROLE_KEY=
+   NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+   NEXT_PUBLIC_META_PIXEL_ID=XXXXXXXXXXXXXXX
+   ```
 
-## Learn More
+3. Inicie o servidor:
+   ```bash
+   npm run dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. Acesse `http://localhost:3000`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Configurar o Supabase
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Faça login no Supabase CLI:
+   ```bash
+   npx supabase login
+   ```
 
-## Deploy on Vercel
+2. Aplique o schema:
+   ```bash
+   npx supabase sql --project-ref <ref> -f supabase/schema.sql
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   Ou cole o conteúdo de `supabase/schema.sql` no SQL Editor do Supabase.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Como cadastrar uma nova oferta
+
+1. Gere o link de afiliado no painel do parceiro:
+   - **Travelpayouts**: use o formulário de *deep link* do painel ou widgets.
+   - **GetYourGuide**: use o *Affiliate Link Builder* no Partner Portal para gerar um link `gyg.me/...`.
+
+2. No Supabase, abra a tabela `affiliate_links` e insira um registro com:
+   - `category`: `flight_domestic_corporate`, `flight_domestic_leisure`, `hotel` ou `activity`.
+   - `title`: nome curto da oferta.
+   - `tracking_url`: o link de afiliado gerado no painel.
+   - `price_hint`: preço inicial, opcional.
+   - `image_url`: URL da imagem.
+   - `active`: `true`.
+
+3. Se for voo, relacione com uma `route` previamente cadastrada na tabela `routes`.
+
+4. Marque `featured = true` para exibir na home.
+
+## Estrutura de pastas
+
+- `src/app/*` — páginas (App Router).
+- `src/components/*` — componentes reutilizáveis.
+- `src/lib/*` — dados mock, cliente Supabase e utilitários.
+- `supabase/schema.sql` — banco de dados.
+
+## Deploy
+
+O deploy foi pensado para a Vercel. Basta conectar o repositório e adicionar as variáveis de ambiente.
