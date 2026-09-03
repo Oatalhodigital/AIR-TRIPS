@@ -1,7 +1,8 @@
 import { OfferCard } from "@/components/OfferCard";
-import { offers } from "@/lib/data";
+import { getOffers } from "@/lib/data";
 
-export default function Home() {
+export default async function Home() {
+  const offers = await getOffers();
   const featured = offers.filter((o) => o.featured);
 
   return (

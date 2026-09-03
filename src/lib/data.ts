@@ -94,3 +94,23 @@ export const categoryLabels: Record<Category, string> = {
   hotel: 'Hotel',
   activity: 'Passeio',
 }
+
+import { supabase } from './supabase'
+
+export async function getOffers(): Promise<Offer[]> {
+  if (!supabase) return offers
+  const { data, error } = await supabase
+    .from('affiliate_links')
+    .select('*')
+    .eq('active', true)
+    .order('created_at', { ascending: false })
+  if (error || !data) return offers
+  return data as Offer[]
+}
+
+export async function getRoutes(): Promise<Offer[]> {
+  if (!supabase) return offers.filter((o) => o.origin && o.destination)
+  const { data, error } = await supabase.from('routes').select('*')
+  if (error || !data) return offers.filter((o) => o.origin && o.destination)
+  return data as unknown as Offer[]
+}

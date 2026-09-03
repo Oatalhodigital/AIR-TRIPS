@@ -1,12 +1,13 @@
 import { OfferCard } from "@/components/OfferCard";
-import { offers } from "@/lib/data";
+import { getOffers } from "@/lib/data";
 
 export const metadata = {
   title: "Passeios e Atrações — AIR-TRIP",
   description: "Tours, passeios e atrações selecionadas.",
 };
 
-export default function PasseiosPage() {
+export default async function PasseiosPage() {
+  const offers = await getOffers();
   const activities = offers.filter((o) => o.category === "activity");
 
   return (

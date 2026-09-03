@@ -1,12 +1,13 @@
 import { OfferCard } from "@/components/OfferCard";
-import { offers } from "@/lib/data";
+import { getOffers } from "@/lib/data";
 
 export const metadata = {
   title: "Hotéis — AIR-TRIP",
   description: "Hospedagens selecionadas em destinos nacionais.",
 };
 
-export default function HoteisPage() {
+export default async function HoteisPage() {
+  const offers = await getOffers();
   const hotels = offers.filter((o) => o.category === "hotel");
 
   return (

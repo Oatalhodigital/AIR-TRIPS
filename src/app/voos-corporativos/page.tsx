@@ -1,12 +1,13 @@
 import { OfferCard } from "@/components/OfferCard";
-import { offers } from "@/lib/data";
+import { getOffers } from "@/lib/data";
 
 export const metadata = {
   title: "Voos Corporativos — AIR-TRIP",
   description: "Rotas domésticas corporativas selecionadas para empresas.",
 };
 
-export default function VoosCorporativosPage() {
+export default async function VoosCorporativosPage() {
+  const offers = await getOffers();
   const corporate = offers.filter(
     (o) => o.category === "flight_domestic_corporate"
   );
