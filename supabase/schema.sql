@@ -31,6 +31,7 @@ CREATE TABLE affiliate_links (
   price_hint numeric,
   raw_url text NOT NULL,
   tracking_url text NOT NULL,
+  embed_code text,
   active boolean DEFAULT true,
   featured boolean DEFAULT false,
   created_at timestamptz DEFAULT now(),

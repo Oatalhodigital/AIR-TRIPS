@@ -1,6 +1,8 @@
 import { OfferCard } from "@/components/OfferCard";
 import { getOffers } from "@/lib/data";
 
+export const revalidate = 300;
+
 export default async function Home() {
   const offers = await getOffers();
   const featured = offers.filter((o) => o.featured);
@@ -26,11 +28,17 @@ export default async function Home() {
 
       <section className="mx-auto max-w-7xl px-4 py-12">
         <h2 className="mb-8 text-2xl font-bold text-foreground">Destaques</h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((offer) => (
-            <OfferCard key={offer.id} offer={offer} />
-          ))}
-        </div>
+        {featured.length === 0 ? (
+          <p className="rounded-2xl border border-dashed border-gray-200 p-8 text-center text-gray-500">
+            Nenhuma oferta em destaque. Cadastre uma no painel /admin.
+          </p>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {featured.map((offer) => (
+              <OfferCard key={offer.id} offer={offer} />
+            ))}
+          </div>
+        )}
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-12">

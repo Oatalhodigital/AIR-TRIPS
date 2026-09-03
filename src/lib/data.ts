@@ -12,6 +12,7 @@ export interface Offer {
   image_url: string
   price_hint?: number
   tracking_url: string
+  embed_code?: string | null
   featured?: boolean
   origin?: string
   destination?: string
@@ -101,7 +102,7 @@ export async function getOffers(): Promise<Offer[]> {
   if (!supabase) return offers
   const { data, error } = await supabase
     .from('affiliate_links')
-    .select('*')
+    .select('*, routes:route_id (origin_city, origin_state, destination_city, destination_state)')
     .eq('active', true)
     .order('created_at', { ascending: false })
   if (error || !data) return offers

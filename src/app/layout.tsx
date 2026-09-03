@@ -15,8 +15,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+  ),
   title: "AIR-TRIP — Passagens, hotéis e passeios",
   description: "Compare ofertas de voos corporativos, hotéis e passeios. O AIR-TRIP é um divulgador e comparador, não uma agência.",
+  openGraph: {
+    title: "AIR-TRIP",
+    description: "Compare ofertas de voos, hotéis e passeios.",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
