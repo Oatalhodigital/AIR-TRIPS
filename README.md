@@ -80,6 +80,14 @@ Copie `env.example` para `.env.local` e preencha com os valores reais. **Nenhum 
 
 4. O site usa ISR de 5 minutos (`revalidate = 300`) — uma oferta nova aparece no ar em até 5 minutos, sem `git push`.
 
+## Travelpayouts Drive
+
+O script do Travelpayouts Drive está injetado no `<head>` do layout raiz (`src/app/layout.tsx`) para garantir que a plataforma encontre-o no primeiro carregamento de qualquer página. Além disso, o componente `TravelpayoutsDrive` re-cria o script em toda navegação client-side do App Router (Next.js), para que o Drive possa re-escanear o conteúdo ao trocar de rota sem recarregar a página.
+
+- A página `/roteiros` é a que tem mais texto corrido e onde o Drive tende a ter mais efeito.
+- O Drive é aditivo: se for bloqueado por um ad blocker, o restante do site continua funcionando normalmente.
+- O Drive também está documentado na Política de Privacidade.
+
 ## Widgets de parceiros
 
 - `TravelpayoutsWidget` e `GetYourGuideWidget` exibem o `embed_code` cadastrado no banco.
