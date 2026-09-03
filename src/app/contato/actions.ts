@@ -1,6 +1,6 @@
 "use server";
 
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase";
 
 export async function submitLead(_prevState: unknown, formData: FormData) {
   const data = {
@@ -16,17 +16,18 @@ export async function submitLead(_prevState: unknown, formData: FormData) {
     return { error: "Você precisa concordar com a coleta de dados." };
   }
 
-  if (!supabase) {
+  try {
+    const supabase = await createClient();
+    const { error } = await supabase.from("leads").insert([data]);
+
+    if (error) {
+      console.error(error);
+      return { error: "Erro ao enviar. Tente novamente." };
+    }
+
+    return { ok: true, message: "Solicitação enviada com sucesso!" };
+  } catch {
     console.log("Supabase não configurado. Lead simulado:", data);
     return { ok: true, message: "Mensagem registrada (modo simulação — configure o Supabase para persistir)." };
   }
-
-  const { error } = await supabase.from("leads").insert([data]);
-
-  if (error) {
-    console.error(error);
-    return { error: "Erro ao enviar. Tente novamente." };
-  }
-
-  return { ok: true, message: "Solicitação enviada com sucesso!" };
 }

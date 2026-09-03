@@ -1,16 +1,19 @@
-import { categoryLabels, Offer } from '@/lib/data'
+import Image from "next/image";
+import { categoryLabels, Offer } from "@/lib/data";
 
 export function OfferCard({ offer }: { offer: Offer }) {
-  const label = categoryLabels[offer.category]
+  const label = categoryLabels[offer.category];
 
   return (
     <article className="flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition hover:shadow-md">
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100">
-        <img
+        <Image
           src={offer.image_url}
           alt={offer.title}
-          className="h-full w-full object-cover"
-          loading="lazy"
+          fill
+          unoptimized
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover"
         />
         <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-primary shadow-sm">
           {label}
@@ -26,7 +29,7 @@ export function OfferCard({ offer }: { offer: Offer }) {
         <div className="mt-auto pt-4">
           {offer.price_hint ? (
             <p className="text-sm text-gray-500">
-              a partir de{' '}
+              a partir de{" "}
               <span className="text-lg font-bold text-foreground">
                 R$ {offer.price_hint}
               </span>
@@ -45,5 +48,5 @@ export function OfferCard({ offer }: { offer: Offer }) {
         </div>
       </div>
     </article>
-  )
+  );
 }

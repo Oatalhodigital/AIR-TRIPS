@@ -96,22 +96,22 @@ export const categoryLabels: Record<Category, string> = {
   activity: 'Passeio',
 }
 
-import { supabase } from './supabase'
+import { supabasePublic } from './supabase-public'
 
 export async function getOffers(): Promise<Offer[]> {
-  if (!supabase) return offers
-  const { data, error } = await supabase
+  if (!supabasePublic) return offers
+  const { data, error } = await supabasePublic
     .from('affiliate_links')
     .select('*, routes:route_id (origin_city, origin_state, destination_city, destination_state)')
     .eq('active', true)
     .order('created_at', { ascending: false })
   if (error || !data) return offers
-  return data as Offer[]
+  return data as unknown as Offer[]
 }
 
 export async function getRoutes(): Promise<Offer[]> {
-  if (!supabase) return offers.filter((o) => o.origin && o.destination)
-  const { data, error } = await supabase.from('routes').select('*')
+  if (!supabasePublic) return offers.filter((o) => o.origin && o.destination)
+  const { data, error } = await supabasePublic.from('routes').select('*')
   if (error || !data) return offers.filter((o) => o.origin && o.destination)
   return data as unknown as Offer[]
 }

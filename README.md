@@ -6,8 +6,21 @@ Site de divulgação de passagens aéreas, hotéis e passeios via links de afili
 
 - Next.js 16 + React 19 + TypeScript
 - Tailwind CSS v4
-- Supabase (Postgres) — `supabase/schema.sql`
+- Supabase (Postgres + Auth) — `supabase/schema.sql`
 - Google Analytics 4 + Meta Pixel
+
+## Variáveis de ambiente
+
+Copie `env.example` para `.env.local` e preencha com os valores reais. **Nenhum valor real deve ser commitado**.
+
+| Nome | Onde conseguir | Público? |
+|---|---|---|
+| `NEXT_PUBLIC_SITE_URL` | URL do site na Vercel (ex.: `https://air-trips.vercel.app`) | sim |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → API → URL | sim |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Project Settings → API → `anon public` | sim |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Project Settings → API → `service_role` (secreta) | **não** |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics → Admin → Fluxo de dados → ID da medição | sim |
+| `NEXT_PUBLIC_META_PIXEL_ID` | Meta Events Manager → Configurações do Pixel → ID do pixel | sim |
 
 ## Como rodar local
 
@@ -16,16 +29,7 @@ Site de divulgação de passagens aéreas, hotéis e passeios via links de afili
    npm install
    ```
 
-2. Copie `env.example.txt` para `.env.local` e preencha:
-   ```
-   NEXT_PUBLIC_SITE_URL=http://localhost:3000
-   NEXT_PUBLIC_SUPABASE_URL=
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=
-   SUPABASE_SERVICE_ROLE_KEY=
-   ADMIN_PASSWORD=senha-forte
-   NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
-   NEXT_PUBLIC_META_PIXEL_ID=XXXXXXXXXXXXXXX
-   ```
+2. Preencha o `.env.local` com os valores reais.
 
 3. Inicie o servidor:
    ```bash
@@ -41,18 +45,20 @@ Site de divulgação de passagens aéreas, hotéis e passeios via links de afili
    npx supabase login
    ```
 
-2. Crie o projeto e aplique o schema:
+2. Aplique o schema e o seed:
    ```bash
    npx supabase sql --project-ref <ref> -f supabase/schema.sql
-   npx supabase seed --project-ref <ref> -f supabase/seed.sql
+   npx supabase sql --project-ref <ref> -f supabase/seed.sql
    ```
 
    Ou cole o conteúdo de `supabase/schema.sql` e `supabase/seed.sql` no SQL Editor do Supabase.
 
+3. Ative **Supabase Auth** (e-mail/senha) e crie o usuário administrador em **Authentication → Users → Add user**.
+
 ## Como acessar o /admin
 
-1. Acesse `http://localhost:3000/admin`.
-2. Digite a senha cadastrada na variável `ADMIN_PASSWORD`.
+1. Acesse `http://localhost:3000/admin` (ou `/admin` no domínio de produção).
+2. Faça login com o e-mail/senha cadastrado no Supabase Studio.
 3. Use o formulário para cadastrar rotas e ofertas.
 
 ## Como cadastrar uma nova oferta
@@ -65,7 +71,7 @@ Site de divulgação de passagens aéreas, hotéis e passeios via links de afili
    - `category`: `flight_domestic_corporate`, `flight_domestic_leisure`, `hotel` ou `activity`.
    - `title`, `description`, `image_url`.
    - `tracking_url`: o link de afiliado gerado no painel.
-   - `embed_code`: código do widget ( Travelpayouts / GetYourGuide ), se quiser exibir o widget vivo.
+   - `embed_code`: código do widget (Travelpayouts / GetYourGuide), se quiser exibir o widget vivo.
    - `price_hint`: preço inicial, opcional.
    - `active`: `true`.
    - `featured`: `true` para aparecer na home.

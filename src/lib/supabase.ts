@@ -1,6 +1,30 @@
-import { createClient } from '@supabase/supabase-js'
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+export async function createClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) {
+    throw new Error("NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY são obrigatórios.");
+  }
 
-export const supabase = url && key ? createClient(url, key) : undefined
+  try {
+    const cookieStore = await cookies();
+    return createServerClient(url, key, {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options);
+          });
+        },
+      },
+    });
+  } catch {
+    // Fallback para contextos sem cookies (build estático, etc.)
+    const { createClient: createSupabaseClient } = await import("@supabase/supabase-js");
+    return createSupabaseClient(url, key);
+  }
+}
