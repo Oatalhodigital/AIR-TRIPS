@@ -38,6 +38,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="flex-1">{children}</main>
         <Analytics />
         <TravelpayoutsDrive />
+        <script
+          id="travelpayouts-drive"
+          data-noptimize="1"
+          data-cfasync="false"
+          data-wpfc-render="false"
+          data-no-defer="1"
+          data-cmp-ab="2"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                var script = document.createElement("script");
+                script.id = "travelpayouts-drive-external";
+                script.async = 1;
+                script.setAttribute("data-cmp-ab", "2");
+                script.src = 'https://emrldtp.cc/NTcwMDUx.js?t=570051';
+                document.head.appendChild(script);
+              })();
+            `,
+          }}
+        />
       </body>
     </html>
   );

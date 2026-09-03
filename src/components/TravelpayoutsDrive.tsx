@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 
 const SCRIPT_ID = "travelpayouts-drive";
@@ -8,6 +8,7 @@ const EXTERNAL_ID = "travelpayouts-drive-external";
 
 export function TravelpayoutsDrive() {
   const pathname = usePathname();
+  const initialPath = useRef(pathname);
 
   useEffect(() => {
     if (typeof document === "undefined") return;
@@ -39,6 +40,20 @@ export function TravelpayoutsDrive() {
     `;
 
     document.head.appendChild(script);
+
+    if (initialPath.current !== pathname) {
+      // Força a re-execução recriando o script externo
+      const external = document.getElementById(EXTERNAL_ID);
+      if (external) {
+        external.remove();
+        const fresh = document.createElement("script");
+        fresh.id = EXTERNAL_ID;
+        fresh.async = true;
+        fresh.setAttribute("data-cmp-ab", "2");
+        fresh.src = "https://emrldtp.cc/NTcwMDUx.js?t=570051";
+        document.head.appendChild(fresh);
+      }
+    }
   }, [pathname]);
 
   return null;
