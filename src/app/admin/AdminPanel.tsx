@@ -33,7 +33,9 @@ interface LinkItem {
   tracking_url: string;
   active: boolean;
   featured: boolean;
-  routes?: { display_name?: string } | null;
+  price_hint: number | null;
+  price_hint_updated_at: string | null;
+  routes?: { display_name?: string }[] | null;
 }
 
 interface PartnerItem {
@@ -287,6 +289,8 @@ export default function AdminPanel() {
                 <th className="pb-2">Título</th>
                 <th className="pb-2">Categoria</th>
                 <th className="pb-2">Rota</th>
+                <th className="pb-2">Preço</th>
+                <th className="pb-2">Atualizado</th>
                 <th className="pb-2">Ativo</th>
                 <th className="pb-2">Destaque</th>
               </tr>
@@ -297,7 +301,19 @@ export default function AdminPanel() {
                   <td className="py-3 pr-4 font-medium">{link.title}</td>
                   <td className="py-3 pr-4 text-gray-500">{link.category}</td>
                   <td className="py-3 pr-4 text-gray-500">
-                    {link.routes?.display_name ?? "—"}
+                    {link.routes?.[0]?.display_name ?? "—"}
+                  </td>
+                  <td className="py-3 pr-4 text-gray-700">
+                    {link.price_hint
+                      ? `R$ ${link.price_hint}`
+                      : "—"}
+                  </td>
+                  <td className="py-3 pr-4 text-xs text-gray-500">
+                    {link.price_hint_updated_at
+                      ? new Date(link.price_hint_updated_at).toLocaleString(
+                          "pt-BR"
+                        )
+                      : "manual"}
                   </td>
                   <td className="py-3 pr-4">
                     <button

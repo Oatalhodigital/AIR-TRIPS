@@ -49,7 +49,9 @@ export async function listLinks() {
     const supabase = createAdminClient();
     const { data, error } = await supabase
       .from("affiliate_links")
-      .select("*, routes(display_name), affiliate_networks(name)")
+      .select(
+        "id, title, category, tracking_url, active, featured, price_hint, price_hint_updated_at, routes(display_name), affiliate_networks(name)"
+      )
       .order("created_at", { ascending: false });
     return { data: data ?? [], error: error?.message };
   } catch (e) {
