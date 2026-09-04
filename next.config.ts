@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/internacional",
-        destination: "/#internacional",
+        destination: "/",
         permanent: true,
       },
     ];

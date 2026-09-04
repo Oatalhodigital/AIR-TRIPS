@@ -14,21 +14,7 @@ export const metadata = {
   description: "Catálogo de parceiros de voos, aluguel de carro, eSIM, seguros, passeios e muito mais.",
 };
 
-// Parceiros que fazem mais sentido para viagens internacionais.
-const INTERNATIONAL_PARTNERS = new Set([
-  "Airalo",
-  "Yesim",
-  "Drimsim",
-  "AutoEurope",
-  "GoCity",
-  "Klook",
-  "Kkday",
-  "WeGoTrip",
-  "Saily",
-]);
-
 function PartnerCard({ partner }: { partner: Partner }) {
-  const isInternational = INTERNATIONAL_PARTNERS.has(partner.name);
   return (
     <TrackedLink
       href={partner.tracking_url || "#"}
@@ -38,7 +24,7 @@ function PartnerCard({ partner }: { partner: Partner }) {
       category={partner.category}
       className="group flex flex-col rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition hover:shadow-md"
     >
-      <div className="mb-3 flex h-12 items-center justify-between">
+      <div className="mb-3 flex h-12 items-center">
         {partner.logo_url ? (
           <Image
             src={partner.logo_url}
@@ -50,11 +36,6 @@ function PartnerCard({ partner }: { partner: Partner }) {
           />
         ) : (
           <span className="text-lg font-bold text-primary">{partner.name}</span>
-        )}
-        {isInternational && (
-          <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-blue-700">
-            Internacional
-          </span>
         )}
       </div>
       {partner.description && (
