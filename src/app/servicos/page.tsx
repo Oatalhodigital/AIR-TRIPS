@@ -1,5 +1,12 @@
-import { getPartners, getCategoryLabel, groupPartnersByCategory } from "@/lib/partners";
+import {
+  getPartners,
+  getCategoryLabel,
+  groupPartnersByCategory,
+  PartnerCategory,
+} from "@/lib/partners";
 import { Partner } from "@/lib/partners";
+import { TrackedLink } from "@/components/TrackedLink";
+import Image from "next/image";
 
 export const metadata = {
   title: "Parceiros e Serviços — AIR-TRIP",
@@ -8,17 +15,22 @@ export const metadata = {
 
 function PartnerCard({ partner }: { partner: Partner }) {
   return (
-    <a
+    <TrackedLink
       href={partner.tracking_url || "#"}
       target="_blank"
       rel="noopener noreferrer"
+      partner={partner.name}
+      category={partner.category}
       className="group flex flex-col rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition hover:shadow-md"
     >
       <div className="mb-3 flex h-12 items-center">
         {partner.logo_url ? (
-          <img
+          <Image
             src={partner.logo_url}
             alt={partner.name}
+            width={120}
+            height={32}
+            unoptimized
             className="h-8 w-auto object-contain"
           />
         ) : (
@@ -52,14 +64,14 @@ function PartnerCard({ partner }: { partner: Partner }) {
           />
         </svg>
       </span>
-    </a>
+    </TrackedLink>
   );
 }
 
 export default async function ServicosPage() {
   const partners = await getPartners();
   const grouped = groupPartnersByCategory(partners);
-  const categories = Object.keys(grouped) as Array<keyof typeof grouped>;
+  const categories = Object.keys(grouped) as PartnerCategory[];
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-12">
@@ -80,7 +92,7 @@ export default async function ServicosPage() {
           {categories.map((category) => (
             <div key={category}>
               <h2 className="mb-4 text-xl font-semibold text-foreground">
-                {getCategoryLabel(category as any)}
+                {getCategoryLabel(category)}
               </h2>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {grouped[category].map((p) => (

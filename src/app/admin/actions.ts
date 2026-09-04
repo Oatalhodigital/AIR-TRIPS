@@ -125,3 +125,58 @@ export async function toggleLink(
     return { error: String(e) };
   }
 }
+
+export async function listPartners() {
+  try {
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from("partners")
+      .select("*")
+      .order("display_order", { ascending: true });
+    return { data: data ?? [], error: error?.message };
+  } catch (e) {
+    return { data: [], error: String(e) };
+  }
+}
+
+export async function createPartner(_prevState: unknown, formData: FormData) {
+  const row = {
+    name: String(formData.get("name") ?? ""),
+    slug: String(formData.get("slug") ?? ""),
+    category: String(formData.get("category") ?? ""),
+    description: String(formData.get("description") ?? ""),
+    tracking_url: String(formData.get("tracking_url") ?? ""),
+    embed_code: String(formData.get("embed_code") ?? ""),
+    commission_info: String(formData.get("commission_info") ?? ""),
+    cookie_info: String(formData.get("cookie_info") ?? ""),
+    logo_url: String(formData.get("logo_url") ?? ""),
+    display_order: Number(formData.get("display_order") || 0),
+    active: true,
+    featured: formData.get("featured") === "on",
+  };
+  if (!row.name || !row.slug || !row.category) {
+    return { error: "Nome, slug e categoria são obrigatórios." };
+  }
+
+  try {
+    const supabase = createAdminClient();
+    const { error } = await supabase.from("partners").insert([row]);
+    if (error) return { error: error.message };
+    return { ok: true };
+  } catch (e) {
+    return { error: String(e) };
+  }
+}
+
+export async function togglePartner(id: string, active: boolean) {
+  try {
+    const supabase = createAdminClient();
+    const { error } = await supabase
+      .from("partners")
+      .update({ active })
+      .eq("id", id);
+    return { error: error?.message };
+  } catch (e) {
+    return { error: String(e) };
+  }
+}

@@ -1,14 +1,18 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://air-trips.vercel.app";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://air-trips.vercel.app";
   const routes = [
     "/",
     "/voos-corporativos",
     "/voos-comerciais",
     "/hoteis",
     "/passeios",
+    "/servicos",
     "/roteiros",
+    "/roteiros/rio-em-3-dias",
+    "/roteiros/bh-executivos",
     "/sobre",
     "/contato",
     "/politica-de-privacidade",

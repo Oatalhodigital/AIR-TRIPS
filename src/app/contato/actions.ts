@@ -1,6 +1,6 @@
 "use server";
 
-import { createClient } from "@/lib/supabase";
+import { createAdminClient } from "@/lib/supabase-admin";
 
 export async function submitLead(_prevState: unknown, formData: FormData) {
   const data = {
@@ -17,7 +17,7 @@ export async function submitLead(_prevState: unknown, formData: FormData) {
   }
 
   try {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
     const { error } = await supabase.from("leads").insert([data]);
 
     if (error) {
@@ -26,8 +26,8 @@ export async function submitLead(_prevState: unknown, formData: FormData) {
     }
 
     return { ok: true, message: "Solicitação enviada com sucesso!" };
-  } catch {
-    console.log("Supabase não configurado. Lead simulado:", data);
+  } catch (e) {
+    console.log("Supabase não configurado. Lead simulado:", data, e);
     return { ok: true, message: "Mensagem registrada (modo simulação — configure o Supabase para persistir)." };
   }
 }

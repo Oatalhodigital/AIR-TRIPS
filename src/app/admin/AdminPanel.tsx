@@ -4,11 +4,14 @@ import { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   createLink,
+  createPartner,
   createRoute,
   listLinks,
+  listPartners,
   listRoutes,
   signOut,
   toggleLink,
+  togglePartner,
 } from "./actions";
 
 interface Route {
@@ -31,40 +34,59 @@ interface LinkItem {
   routes?: { display_name?: string } | null;
 }
 
+interface PartnerItem {
+  id: string;
+  name: string;
+  slug: string;
+  category: string;
+  tracking_url: string;
+  active: boolean;
+}
+
+const categoryOptions = [
+  { value: "flights", label: "Voos" },
+  { value: "hotels", label: "Hotéis" },
+  { value: "car_rental", label: "Aluguel de Carro" },
+  { value: "airport_transfer", label: "Transfer / Traslado" },
+  { value: "esim", label: "eSIM / Conectividade" },
+  { value: "travel_insurance", label: "Seguro Viagem" },
+  { value: "flight_compensation", label: "Compensação de Voo" },
+  { value: "tours_activities", label: "Passeios e Atividades" },
+  { value: "luggage_storage", label: "Guarda-volumes" },
+  { value: "bike_rental", label: "Aluguel de Bicicleta" },
+  { value: "city_pass", label: "City Pass" },
+];
+
 export default function AdminPanel() {
   const [routeState, routeAction] = useActionState(createRoute, null);
   const [linkState, linkAction] = useActionState(createLink, null);
+  const [partnerState, partnerAction] = useActionState(createPartner, null);
   const [routes, setRoutes] = useState<Route[]>([]);
   const [links, setLinks] = useState<LinkItem[]>([]);
+  const [partners, setPartners] = useState<PartnerItem[]>([]);
   const router = useRouter();
 
-  useEffect(() => {
+  const refresh = () => {
     let active = true;
-    Promise.all([listRoutes(), listLinks()]).then(([r, l]) => {
+    Promise.all([listRoutes(), listLinks(), listPartners()]).then(([r, l, p]) => {
       if (active) {
         setRoutes(r.data ?? []);
         setLinks(l.data ?? []);
+        setPartners(p.data ?? []);
       }
     });
     return () => {
       active = false;
     };
-  }, []);
+  };
+
+  useEffect(refresh, []);
 
   useEffect(() => {
-    if (routeState?.ok || linkState?.ok) {
-      let active = true;
-      Promise.all([listRoutes(), listLinks()]).then(([r, l]) => {
-        if (active) {
-          setRoutes(r.data ?? []);
-          setLinks(l.data ?? []);
-        }
-      });
-      return () => {
-        active = false;
-      };
+    if (routeState?.ok || linkState?.ok || partnerState?.ok) {
+      refresh();
     }
-  }, [routeState, linkState]);
+  }, [routeState, linkState, partnerState]);
 
   async function handleToggle(
     id: string,
@@ -72,9 +94,12 @@ export default function AdminPanel() {
     current: boolean
   ) {
     await toggleLink(id, field, !current);
-    const [r, l] = await Promise.all([listRoutes(), listLinks()]);
-    setRoutes(r.data ?? []);
-    setLinks(l.data ?? []);
+    refresh();
+  }
+
+  async function handlePartnerToggle(id: string, current: boolean) {
+    await togglePartner(id, !current);
+    refresh();
   }
 
   async function handleLogout() {
@@ -286,6 +311,121 @@ export default function AdminPanel() {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <div className="mt-8 grid gap-8 lg:grid-cols-2">
+        <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+          <h2 className="mb-4 text-lg font-semibold">Novo parceiro</h2>
+          <form action={partnerAction} className="space-y-3">
+            <input
+              name="name"
+              placeholder="Nome do parceiro"
+              required
+              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+            />
+            <input
+              name="slug"
+              placeholder="Slug (ex.: aviasales)"
+              required
+              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+            />
+            <select
+              name="category"
+              required
+              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+            >
+              {categoryOptions.map((c) => (
+                <option key={c.value} value={c.value}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+            <input
+              name="tracking_url"
+              placeholder="Link de afiliado tpm.li"
+              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+            />
+            <input
+              name="logo_url"
+              placeholder="URL do logo"
+              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+            />
+            <textarea
+              name="description"
+              placeholder="Descrição"
+              rows={2}
+              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+            />
+            <div className="grid grid-cols-2 gap-3">
+              <input
+                name="commission_info"
+                placeholder="Comissão"
+                className="rounded-lg border border-gray-200 px-3 py-2 text-sm"
+              />
+              <input
+                name="cookie_info"
+                placeholder="Cookie"
+                className="rounded-lg border border-gray-200 px-3 py-2 text-sm"
+              />
+            </div>
+            <input
+              name="display_order"
+              type="number"
+              placeholder="Ordem"
+              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+            />
+            <label className="flex items-center gap-2 text-sm text-gray-600">
+              <input type="checkbox" name="featured" className="rounded" />
+              Destacar
+            </label>
+            {partnerState?.error && (
+              <p className="text-sm text-red-600">{partnerState.error}</p>
+            )}
+            {partnerState?.ok && (
+              <p className="text-sm text-green-600">Parceiro salvo.</p>
+            )}
+            <button className="w-full rounded-lg bg-primary px-4 py-2.5 font-semibold text-white hover:bg-primary-hover">
+              Salvar parceiro
+            </button>
+          </form>
+        </div>
+
+        <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+          <h2 className="mb-4 text-lg font-semibold">Parceiros cadastrados</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b text-left text-gray-500">
+                  <th className="pb-2">Nome</th>
+                  <th className="pb-2">Categoria</th>
+                  <th className="pb-2">Ativo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {partners.map((p) => (
+                  <tr key={p.id} className="border-b last:border-0">
+                    <td className="py-3 pr-4 font-medium">{p.name}</td>
+                    <td className="py-3 pr-4 text-gray-500">{p.category}</td>
+                    <td className="py-3">
+                      <button
+                        onClick={() =>
+                          handlePartnerToggle(p.id, p.active)
+                        }
+                        className={`rounded-full px-2 py-1 text-xs font-semibold ${
+                          p.active
+                            ? "bg-green-100 text-green-700"
+                            : "bg-gray-100 text-gray-500"
+                        }`}
+                      >
+                        {p.active ? "Sim" : "Não"}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </>

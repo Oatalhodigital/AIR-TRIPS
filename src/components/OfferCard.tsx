@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { categoryLabels, Offer } from "@/lib/data";
+import { TrackedLink } from "./TrackedLink";
 
 export function OfferCard({ offer }: { offer: Offer }) {
   const label = categoryLabels[offer.category];
@@ -37,14 +38,16 @@ export function OfferCard({ offer }: { offer: Offer }) {
           ) : (
             <p className="text-sm text-gray-500">Consulte a melhor tarifa</p>
           )}
-          <a
+          <TrackedLink
             href={offer.tracking_url}
             target="_blank"
             rel="nofollow sponsored"
+            partner={offer.title}
+            category={offer.category}
             className="mt-3 inline-flex w-full items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-hover"
           >
             Ver oferta
-          </a>
+          </TrackedLink>
         </div>
       </div>
     </article>
