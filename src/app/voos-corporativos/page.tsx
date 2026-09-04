@@ -1,5 +1,6 @@
 import { OfferCard } from "@/components/OfferCard";
 import { TravelpayoutsWidget } from "@/components/TravelpayoutsWidget";
+import { FlightSearchWidget } from "@/components/FlightSearchWidget";
 import { getOffers } from "@/lib/data";
 
 export const revalidate = 300;
@@ -24,6 +25,8 @@ export default async function VoosCorporativosPage() {
       <p className="mb-8 max-w-2xl text-gray-600">
         Rotas estratégicas para executivos: BH ↔ RJ, SP ↔ RIO, BA ↔ SP e outras.
       </p>
+
+      <FlightSearchWidget />
 
       {widget && (
         <div className="mb-10">

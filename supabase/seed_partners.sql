@@ -1,0 +1,27 @@
+insert into partners (name, slug, category, description, tracking_url, commission_info, cookie_info, featured, active, display_order)
+values
+  ('Aviasales', 'aviasales', 'flights', 'Busca de passagens aéreas.', '', '40%', '30 dias', true, true, 10),
+  ('AutoEurope', 'autoeurope', 'car_rental', 'Aluguel de carro na Europa.', '', '4.4-6%', '20 dias', false, true, 20),
+  ('QEEQ', 'qeeq', 'car_rental', 'Comparação de aluguel de carros.', '', '5-10%', '30 dias', false, true, 21),
+  ('GetRentacar.com', 'getrentacar', 'car_rental', 'Aluguel de carro com motoristas locais.', '', '10%', '90 dias', false, true, 22),
+  ('Economybookings.com', 'economybookings', 'car_rental', 'Reserva de carros pelo mundo.', '', '3-8%', '30 dias', false, true, 23),
+  ('Localrent.com', 'localrent', 'car_rental', 'Aluguel de carros locais.', '', '7.5-12%', '30 dias', false, true, 24),
+  ('BikesBooking.com', 'bikesbooking', 'bike_rental', 'Aluguel de bicicletas e scooters.', '', '4%', '30 dias', false, true, 30),
+  ('Kiwitaxi', 'kiwitaxi', 'airport_transfer', 'Transfers do aeroporto.', '', '9-11%', '30 dias', false, true, 40),
+  ('GetTransfer', 'gettransfer', 'airport_transfer', 'Transfers e traslados.', '', '—', '—', false, true, 41),
+  ('Welcome Pickups', 'welcomepickups', 'airport_transfer', 'Transfers privativos.', '', '—', '—', false, true, 42),
+  ('Airalo', 'airalo', 'esim', 'eSIM para viagens internacionais.', '', '12%', '30 dias', true, true, 50),
+  ('Yesim', 'yesim', 'esim', 'eSIM com planos globais.', '', '—', '—', false, true, 51),
+  ('Drimsim', 'drimsim', 'esim', 'Chip SIM internacional.', '', '—', '—', false, true, 52),
+  ('Saily', 'saily', 'esim', 'eSIM para conectividade no exterior.', '', '—', '—', false, true, 53),
+  ('AirHelp', 'airhelp', 'flight_compensation', 'Indenização por atraso/cancelamento de voo.', '', '15-16.5%', '45 dias', true, true, 60),
+  ('Compensair', 'compensair', 'flight_compensation', 'Compensação de voos.', '', '—', '—', false, true, 61),
+  ('Intui', 'intui', 'travel_insurance', 'Proteção de viagem.', '', '—', '—', false, true, 70),
+  ('EktaTraveling', 'ektatraveling', 'travel_insurance', 'Seguro e assistência viagem.', '', '—', '—', false, true, 71),
+  ('Tiqets', 'tiqets', 'tours_activities', 'Ingressos e atividades.', '', '3.5-8%', '30 dias', false, true, 80),
+  ('Klook', 'klook', 'tours_activities', 'Experiências e passeios.', '', '2-5%', '7-30 dias', false, true, 81),
+  ('WeGoTrip', 'wegotrip', 'tours_activities', 'Passeios e ingressos.', '', '6.84-41.5%', '30 dias', false, true, 82),
+  ('Kkday', 'kkday', 'tours_activities', 'Atividades e tours.', '', '—', '—', false, true, 83),
+  ('GoCity', 'gocity', 'city_pass', 'City passes e passes turísticos.', '', '—', '—', false, true, 90),
+  ('RadicalStorage', 'radicalstorage', 'luggage_storage', 'Guarda-volumes de malas.', '', '—', '—', false, true, 100)
+;
