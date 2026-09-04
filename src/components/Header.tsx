@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 const nav = [
   { href: '/', label: 'Home' },
@@ -16,8 +17,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
-        <Link href="/" className="text-2xl font-bold tracking-tight text-primary">
-          AIR-TRIP
+        <Link href="/" className="flex items-center" aria-label="AIR-TRIP - ir para a home">
+          <Image src="/logo.svg" alt="AIR-TRIP" width={172} height={40} priority className="h-9 w-auto" />
         </Link>
         <div className="hidden items-center gap-6 md:flex">
           <nav className="flex gap-6">
