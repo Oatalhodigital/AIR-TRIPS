@@ -1,9 +1,13 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function Footer() {
   return (
     <footer className="border-t border-gray-100 bg-gray-50">
       <div className="mx-auto max-w-7xl px-4 py-8">
+        <div className="mb-4 flex justify-center">
+          <Image src="/logo.svg" alt="AIR-TRIP" width={188} height={40} className="h-8 w-auto" />
+        </div>
         <p className="text-center text-sm text-gray-600">
           AIR-TRIP é um comparador de viagens — direcionamos você para nossos
           parceiros, não vendemos passagens diretamente.
