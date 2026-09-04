@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/roteiros",
     "/roteiros/rio-em-3-dias",
     "/roteiros/bh-executivos",
+    "/internacional",
     "/sobre",
     "/contato",
     "/politica-de-privacidade",

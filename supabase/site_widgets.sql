@@ -8,12 +8,14 @@ create table if not exists site_widgets (
   created_at timestamptz default now()
 );
 
--- Placeholders para os widgets solicitados na Fase 9.
+-- Placeholders para os widgets solicitados na Fase 9 e 10.
 -- O usuário deve substituir embed_code pelo código gerado no painel Travelpayouts.
 insert into site_widgets (slug, name, page, embed_code)
 values
   ('aviasales-popular-routes', 'Aviasales Popular Routes Widget', 'voos-comerciais', ''),
   ('hotellook-search', 'Hotellook Hotel Search Widget', 'hoteis', ''),
   ('localrent-car-search', 'Localrent Car Search Widget', 'servicos', ''),
-  ('klook-popular-tours', 'Klook Popular Tours Widget', 'passeios', '')
+  ('klook-popular-tours', 'Klook Popular Tours Widget', 'passeios', ''),
+  ('international-featured', 'Destaques Internacionais (promo_id 4563)', 'internacional', ''),
+  ('international-destination', 'Destino Internacional Específico (city=60691)', 'internacional', '')
 on conflict (slug) do nothing;

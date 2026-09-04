@@ -9,6 +9,7 @@ const nav = [
   { href: '/passeios', label: 'Passeios' },
   { href: '/servicos', label: 'Parceiros' },
   { href: '/roteiros', label: 'Roteiros' },
+  { href: '/internacional', label: 'Internacional' },
   { href: '/sobre', label: 'Sobre' },
   { href: '/contato', label: 'Contato' },
 ]
