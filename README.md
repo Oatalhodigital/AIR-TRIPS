@@ -92,6 +92,10 @@ O script do Travelpayouts Drive está injetado no `<head>` do layout raiz (`src/
 - O Drive é aditivo: se for bloqueado por um ad blocker, o restante do site continua funcionando normalmente.
 - O Drive também está documentado na Política de Privacidade.
 
+### Erro de console conhecido (não bloqueante)
+
+O script do Travelpayouts Drive carrega anúncios de terceiros via `securepubads.g.doubleclick.net`. Em alguns navegadores, o console mostra `Failed to load resource: 400` vindo desse domínio. **Esse erro é do script da Drive, não do código do AIR-TRIP** — não há CSP nem headers customizados em `next.config.ts` que interfiram. O `link_switcher` do Drive continua funcionando normalmente apesar desse erro.
+
 ## Widgets de parceiros
 
 - `TravelpayoutsWidget` e `GetYourGuideWidget` exibem o `embed_code` cadastrado no banco.
