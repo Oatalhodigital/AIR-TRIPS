@@ -9,9 +9,11 @@ import {
   listLinks,
   listPartners,
   listRoutes,
+  listSiteWidgets,
   signOut,
   toggleLink,
   togglePartner,
+  updateSiteWidget,
 } from "./actions";
 
 interface Route {
@@ -43,6 +45,14 @@ interface PartnerItem {
   active: boolean;
 }
 
+interface SiteWidgetItem {
+  id: string;
+  slug: string;
+  name: string;
+  page: string;
+  embed_code: string | null;
+}
+
 const categoryOptions = [
   { value: "flights", label: "Voos" },
   { value: "hotels", label: "Hotéis" },
@@ -61,18 +71,21 @@ export default function AdminPanel() {
   const [routeState, routeAction] = useActionState(createRoute, null);
   const [linkState, linkAction] = useActionState(createLink, null);
   const [partnerState, partnerAction] = useActionState(createPartner, null);
+  const [widgetState, widgetAction] = useActionState(updateSiteWidget, null);
   const [routes, setRoutes] = useState<Route[]>([]);
   const [links, setLinks] = useState<LinkItem[]>([]);
   const [partners, setPartners] = useState<PartnerItem[]>([]);
+  const [widgets, setWidgets] = useState<SiteWidgetItem[]>([]);
   const router = useRouter();
 
   const refresh = () => {
     let active = true;
-    Promise.all([listRoutes(), listLinks(), listPartners()]).then(([r, l, p]) => {
+    Promise.all([listRoutes(), listLinks(), listPartners(), listSiteWidgets()]).then(([r, l, p, w]) => {
       if (active) {
         setRoutes(r.data ?? []);
         setLinks(l.data ?? []);
         setPartners(p.data ?? []);
+        setWidgets(w.data ?? []);
       }
     });
     return () => {
@@ -83,10 +96,10 @@ export default function AdminPanel() {
   useEffect(refresh, []);
 
   useEffect(() => {
-    if (routeState?.ok || linkState?.ok || partnerState?.ok) {
+    if (routeState?.ok || linkState?.ok || partnerState?.ok || widgetState?.ok) {
       refresh();
     }
-  }, [routeState, linkState, partnerState]);
+  }, [routeState, linkState, partnerState, widgetState]);
 
   async function handleToggle(
     id: string,
@@ -115,6 +128,13 @@ export default function AdminPanel() {
       >
         Sair
       </button>
+
+      <div className="mb-6 rounded-lg border border-blue-100 bg-blue-50 p-4 text-sm text-blue-800">
+        <strong>Curadoria manual vs. automático:</strong> rotas em destaque na
+        Home e cards de oferta são curadoria manual — revise semanalmente. Os
+        widgets de busca e “populares” nas páginas de categoria são automáticos
+        e não precisam de manutenção constante.
+      </div>
 
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
@@ -426,6 +446,40 @@ export default function AdminPanel() {
               </tbody>
             </table>
           </div>
+        </div>
+      </div>
+
+      <div className="mt-8 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+        <h2 className="mb-4 text-lg font-semibold">Widgets do site</h2>
+        <p className="mb-4 text-sm text-gray-600">
+          Cole abaixo o código de embed gerado no painel da Travelpayouts para cada widget. Deixe em branco para usar o fallback textual.
+        </p>
+        <div className="space-y-4">
+          {widgets.map((w) => (
+            <form key={w.id} action={widgetAction} className="space-y-2 border-b border-gray-100 pb-4 last:border-0">
+              <input type="hidden" name="id" value={w.id} />
+              <div className="flex items-center justify-between">
+                <p className="font-medium">{w.name}</p>
+                <span className="text-xs text-gray-500">slug: {w.slug}</span>
+              </div>
+              <textarea
+                name="embed_code"
+                defaultValue={w.embed_code || ""}
+                rows={3}
+                placeholder="Código de embed (Travelpayouts)"
+                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm font-mono"
+              />
+              {widgetState?.error && (
+                <p className="text-sm text-red-600">{widgetState.error}</p>
+              )}
+              {widgetState?.ok && (
+                <p className="text-sm text-green-600">Widget atualizado.</p>
+              )}
+              <button className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-hover">
+                Salvar widget
+              </button>
+            </form>
+          ))}
         </div>
       </div>
     </>

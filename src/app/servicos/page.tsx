@@ -6,6 +6,7 @@ import {
 } from "@/lib/partners";
 import { Partner } from "@/lib/partners";
 import { TrackedLink } from "@/components/TrackedLink";
+import { SiteWidget } from "@/components/SiteWidget";
 import Image from "next/image";
 
 export const metadata = {
@@ -94,6 +95,18 @@ export default async function ServicosPage() {
               <h2 className="mb-4 text-xl font-semibold text-foreground">
                 {getCategoryLabel(category)}
               </h2>
+              {category === "car_rental" && (
+                <SiteWidget
+                  slug="localrent-car-search"
+                  title="Buscar carros"
+                  fallback={
+                    <p className="text-sm text-gray-600">
+                      O formulário de busca de aluguel de carros aparecerá aqui
+                      quando o código Localrent for cadastrado.
+                    </p>
+                  }
+                />
+              )}
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {grouped[category].map((p) => (
                   <PartnerCard key={p.id} partner={p} />

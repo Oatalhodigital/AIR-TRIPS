@@ -1,6 +1,7 @@
 import { OfferCard } from "@/components/OfferCard";
 import { TravelpayoutsWidget } from "@/components/TravelpayoutsWidget";
 import { FlightSearchWidget } from "@/components/FlightSearchWidget";
+import { SiteWidget } from "@/components/SiteWidget";
 import { getOffers } from "@/lib/data";
 
 export const revalidate = 300;
@@ -27,6 +28,17 @@ export default async function VoosComerciaisPage() {
       </p>
 
       <FlightSearchWidget />
+
+      <SiteWidget
+        slug="aviasales-popular-routes"
+        title="Rotas em alta"
+        fallback={
+          <p className="text-sm text-gray-600">
+            As rotas populares aparecerão aqui quando o widget Aviasales for
+            configurado no painel /admin.
+          </p>
+        }
+      />
 
       {widget && (
         <div className="mb-10">

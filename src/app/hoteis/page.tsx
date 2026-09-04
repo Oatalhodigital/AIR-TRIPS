@@ -1,5 +1,6 @@
 import { OfferCard } from "@/components/OfferCard";
 import { TravelpayoutsWidget } from "@/components/TravelpayoutsWidget";
+import { SiteWidget } from "@/components/SiteWidget";
 import { getOffers } from "@/lib/data";
 
 export const revalidate = 300;
@@ -20,6 +21,17 @@ export default async function HoteisPage() {
       <p className="mb-8 max-w-2xl text-gray-600">
         Opções de hospedagem próximas a aeroportos e pontos turísticos.
       </p>
+
+      <SiteWidget
+        slug="hotellook-search"
+        title="Buscar hotéis"
+        fallback={
+          <p className="text-sm text-gray-600">
+            O formulário de busca de hotéis aparecerá aqui quando o código
+            Hotellook for cadastrado no painel /admin.
+          </p>
+        }
+      />
 
       {widget && (
         <div className="mb-10">

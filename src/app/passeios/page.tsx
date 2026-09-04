@@ -1,5 +1,6 @@
 import { OfferCard } from "@/components/OfferCard";
 import { GetYourGuideWidget } from "@/components/GetYourGuideWidget";
+import { SiteWidget } from "@/components/SiteWidget";
 import { getOffers } from "@/lib/data";
 
 export const revalidate = 300;
@@ -22,6 +23,17 @@ export default async function PasseiosPage() {
       <p className="mb-8 max-w-2xl text-gray-600">
         Atividades imperdíveis para complementar sua viagem.
       </p>
+
+      <SiteWidget
+        slug="klook-popular-tours"
+        title="Tours populares"
+        fallback={
+          <p className="text-sm text-gray-600">
+            Os tours populares aparecerão aqui quando o widget Klook for
+            cadastrado no painel /admin.
+          </p>
+        }
+      />
 
       {widget && (
         <div className="mb-10">

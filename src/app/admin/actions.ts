@@ -180,3 +180,34 @@ export async function togglePartner(id: string, active: boolean) {
     return { error: String(e) };
   }
 }
+
+export async function listSiteWidgets() {
+  try {
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from("site_widgets")
+      .select("*")
+      .order("slug");
+    return { data: data ?? [], error: error?.message };
+  } catch (e) {
+    return { data: [], error: String(e) };
+  }
+}
+
+export async function updateSiteWidget(_prevState: unknown, formData: FormData) {
+  const id = String(formData.get("id") ?? "");
+  const embed_code = String(formData.get("embed_code") ?? "");
+  if (!id) return { error: "ID obrigatório." };
+
+  try {
+    const supabase = createAdminClient();
+    const { error } = await supabase
+      .from("site_widgets")
+      .update({ embed_code: embed_code || null })
+      .eq("id", id);
+    if (error) return { error: error.message };
+    return { ok: true };
+  } catch (e) {
+    return { error: String(e) };
+  }
+}

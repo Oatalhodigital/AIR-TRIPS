@@ -2,6 +2,8 @@
 
 Site de divulgação de passagens aéreas, hotéis e passeios via links de afiliado. O AIR-TRIP é uma vitrine comparativa: não vende diretamente, apenas direciona para os sites dos parceiros.
 
+Deploy ativo: https://air-trips.vercel.app
+
 ## Stack
 
 - Next.js 16 + React 19 + TypeScript
