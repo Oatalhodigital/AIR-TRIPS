@@ -18,7 +18,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
         <Link href="/" className="flex items-center" aria-label="AIR-TRIP - ir para a home">
-          <Image src="/logo.svg" alt="AIR-TRIP" width={188} height={40} priority className="h-9 w-auto" />
+          <Image src="/logo.png" alt="AIR-TRIP" width={308} height={80} priority className="h-9 w-auto" />
         </Link>
         <div className="hidden items-center gap-6 md:flex">
           <nav className="flex gap-6">
