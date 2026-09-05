@@ -44,6 +44,19 @@ export async function listRoutes() {
   }
 }
 
+export async function listNetworks() {
+  try {
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from("affiliate_networks")
+      .select("id, name")
+      .order("name");
+    return { data: data ?? [], error: error?.message };
+  } catch (e) {
+    return { data: [], error: String(e) };
+  }
+}
+
 export async function listLinks() {
   try {
     const supabase = createAdminClient();
@@ -82,18 +95,20 @@ export async function createRoute(_prevState: unknown, formData: FormData) {
 
 export async function createLink(_prevState: unknown, formData: FormData) {
   const category = String(formData.get("category") ?? "");
-  const routeId = String(formData.get("route_id") ?? "");
+  const routeId = String(formData.get("route_id") ?? "").trim() || null;
+  const networkId = String(formData.get("network_id") ?? "").trim() || null;
+  const priceHintRaw = String(formData.get("price_hint") ?? "").trim();
   const row = {
-    network_id: String(formData.get("network_id") ?? ""),
+    network_id: networkId,
     category,
     route_id: category.startsWith("flight") && routeId ? routeId : null,
     title: String(formData.get("title") ?? ""),
-    description: String(formData.get("description") ?? ""),
-    image_url: String(formData.get("image_url") ?? ""),
-    price_hint: Number(formData.get("price_hint") || 0) || null,
-    raw_url: String(formData.get("raw_url") ?? ""),
+    description: String(formData.get("description") ?? "").trim() || null,
+    image_url: String(formData.get("image_url") ?? "").trim() || null,
+    price_hint: priceHintRaw ? Number(priceHintRaw) || null : null,
+    raw_url: String(formData.get("raw_url") ?? "").trim() || null,
     tracking_url: String(formData.get("tracking_url") ?? ""),
-    embed_code: String(formData.get("embed_code") ?? ""),
+    embed_code: String(formData.get("embed_code") ?? "").trim() || null,
     active: true,
     featured: formData.get("featured") === "on",
   };
@@ -146,12 +161,12 @@ export async function createPartner(_prevState: unknown, formData: FormData) {
     name: String(formData.get("name") ?? ""),
     slug: String(formData.get("slug") ?? ""),
     category: String(formData.get("category") ?? ""),
-    description: String(formData.get("description") ?? ""),
-    tracking_url: String(formData.get("tracking_url") ?? ""),
-    embed_code: String(formData.get("embed_code") ?? ""),
-    commission_info: String(formData.get("commission_info") ?? ""),
-    cookie_info: String(formData.get("cookie_info") ?? ""),
-    logo_url: String(formData.get("logo_url") ?? ""),
+    description: String(formData.get("description") ?? "").trim() || null,
+    tracking_url: String(formData.get("tracking_url") ?? "").trim() || null,
+    embed_code: String(formData.get("embed_code") ?? "").trim() || null,
+    commission_info: String(formData.get("commission_info") ?? "").trim() || null,
+    cookie_info: String(formData.get("cookie_info") ?? "").trim() || null,
+    logo_url: String(formData.get("logo_url") ?? "").trim() || null,
     display_order: Number(formData.get("display_order") || 0),
     active: true,
     featured: formData.get("featured") === "on",
