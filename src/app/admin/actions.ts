@@ -98,6 +98,7 @@ export async function createLink(_prevState: unknown, formData: FormData) {
   const routeId = String(formData.get("route_id") ?? "").trim() || null;
   const networkId = String(formData.get("network_id") ?? "").trim() || null;
   const priceHintRaw = String(formData.get("price_hint") ?? "").trim();
+  const trackingUrl = String(formData.get("tracking_url") ?? "");
   const row = {
     network_id: networkId,
     category,
@@ -106,8 +107,8 @@ export async function createLink(_prevState: unknown, formData: FormData) {
     description: String(formData.get("description") ?? "").trim() || null,
     image_url: String(formData.get("image_url") ?? "").trim() || null,
     price_hint: priceHintRaw ? Number(priceHintRaw) || null : null,
-    raw_url: String(formData.get("raw_url") ?? "").trim() || null,
-    tracking_url: String(formData.get("tracking_url") ?? ""),
+    raw_url: String(formData.get("raw_url") ?? "").trim() || trackingUrl,
+    tracking_url: trackingUrl,
     embed_code: String(formData.get("embed_code") ?? "").trim() || null,
     active: true,
     featured: formData.get("featured") === "on",
